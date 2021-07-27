@@ -47,11 +47,17 @@ ftpd: ${OBJS} ${LIBS}
 	sun4c_53 | sun4m_53 | sun4_53 | sun4_54 | sun4c_54 | sun4m_54 | sun4x_5? | sunx86_54) \
 		${CC} -o $@ ${OBJS} ${LIBS} ${XLIBS} -lsocket -lnsl -lauth -ldl ;; \
 	rs_aix*) \
-		${CC} -o $@ ${OBJS} ${LIBS} ${XLIBS} -ls  ;; \
+		${CC} -o $@ ${OBJS} ${LIBS} ${XLIBS} -ls -lbsd  ;; \
 	  * ) 	${CC} -o $@ ${OBJS} ${LIBS} ${XLIBS} ;; \
 	esac
 
 ftpd.o: ftpd.c AFS_component_version_number.c
+	case ${SYS_NAME} in \
+	rs_aix* ) \
+		${CC} ${CFLAGS} -D_BSD -c $< ;; \
+	* ) \
+		${CC} ${CFLAGS} -c $< ;; \
+	esac
 
 vers.o: ftpd.c ftpcmd.y
 #	sh newvers.sh

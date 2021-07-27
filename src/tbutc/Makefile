@@ -123,7 +123,12 @@ lwps.o: ${BUTC}/lwps.c ${BUTCINCLS}
 	else                               hdrdir=-I"${XBSA_HDRDIR}" ; \
 	fi; \
 	if [ "$$xbsaflags" = "" ]; then hdrdir="" ; fi; \
-	${CC} ${CFLAGS} $$xbsaflags ${BUTCINCLUDE} $$hdrdir -c ${BUTC}/lwps.c
+	case ${SYS_NAME} in \
+	rs_aix*) \
+		${CC} ${CFLAGS} $$xbsaflags ${BUTCINCLUDE} $$hdrdir -c ${BUTC}/lwps.c ;; \
+	*) \
+		${CC} ${CFLAGS} $$xbsaflags ${BUTCINCLUDE} $$hdrdir -c ${BUTC}/lwps.c ;; \
+	esac
 
 tcmain.o: ${BUTC}/tcmain.c ${BUTCINCLS} AFS_component_version_number.c
 	if [ "${XBSA_NOBUILD}" = "" ]; then xbsaflags="${XBSA_FLAGS}" ; \

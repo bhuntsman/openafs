@@ -34,6 +34,7 @@
 
 
 #ifdef AFS_USR_AIX_ENV
+#include  <signal.h>
 #include  <sys/param.h>
 #include  <sys/types.h>
 #include  <sys/socket.h>
@@ -44,6 +45,7 @@
 #include  <netdb.h>
 #include  <sys/timers.h>
 #include  <arpa/inet.h>
+#include  <sys/uio.h>   /* struct iovec */
 #endif /* AFS_USR_AIX_ENV */
 
 #ifdef AFS_USR_SGI_ENV

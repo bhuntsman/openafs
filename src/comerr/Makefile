@@ -101,7 +101,7 @@ tags:	TAGS
 kinstall:
 	@echo No $@ source here.
 
-ukinstall webinstall: install
+ukinstall webinstall: 
 	set ${UKERNELDIR}afs; $(MKDIR_IF_NEEDED)
 	${INSTALL} ${UKSRCS} ${UKERNELDIR}afs
 

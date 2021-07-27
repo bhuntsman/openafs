@@ -133,7 +133,12 @@ partition.o: ${VOL}/partition.c
 	${CC} -c ${CFLAGS} ${VOL}/partition.c
 
 fssync.o: ${VOL}/fssync.c
-	${CC} -c ${CFLAGS} ${VOL}/fssync.c
+	case ${SYS_NAME} in \
+	rs_aix*) \
+		${CC} -c ${CFLAGS} -D_BSD ${VOL}/fssync.c ;; \
+	*) \
+		${CC} -c ${CFLAGS} ${VOL}/fssync.c ;; \
+	esac
 
 purge.o: ${VOL}/purge.c
 	${CC} -c ${CFLAGS} ${VOL}/purge.c
