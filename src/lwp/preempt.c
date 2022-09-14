@@ -36,7 +36,9 @@ int PRE_Block = 0;
 #else
 #include <sys/time.h>
 #include <signal.h>
+#ifndef AFS_AIX_ENV
 #include <ucontext.h>
+#endif
 #include "lwp.h"
 #include "preempt.h"
 
@@ -46,15 +48,26 @@ int PRE_Block = 0;		/* used in lwp.c and process.s */
 char PRE_Block = 0;		/* used in lwp.c and process.s */
 #endif
 
+#ifdef AFS_AIX_ENV
+static void AlarmHandler(sig, code, scp)
+    int sig;
+    int code;
+    struct sigcontext *scp;
+#else
 static void AlarmHandler(sig, st, scp)
     int sig;
     siginfo_t *st;
     ucontext_t *scp;
+#endif
     {
     if (PRE_Block == 0 && lwp_cpptr->level == 0)
 	{
 	PRE_BeginCritical();
+#ifdef AFS_AIX_ENV
+	sigsetmask(scp->sc_mask);
+#else
 	sigprocmask(SIG_SETMASK, &scp->uc_sigmask, NULL);
+#endif
 	LWP_DispatchProcess();
 	PRE_EndCritical();
 	}
@@ -65,7 +78,11 @@ int PRE_InitPreempt(slice)
     struct timeval *slice;
     {
     struct itimerval itv;
+#ifdef AFS_AIX_ENV
+    struct sigvec vec;
+#else
     struct sigaction action;
+#endif
 
     if (lwp_cpptr == 0) return (LWP_EINIT);
     
@@ -79,6 +96,15 @@ int PRE_InitPreempt(slice)
 	itv.it_interval = itv.it_value = *slice;
 	}
 
+#ifdef AFS_AIX_ENV
+    bzero((char *)&vec, sizeof(vec));
+    vec.sv_handler = AlarmHandler;
+    vec.sv_mask = vec.sv_onstack = 0;
+
+    if ((sigvec(SIGALRM, &vec, (struct sigvec *)0) == 1)
+        || (setitimer(ITIMER_REAL, &itv, (struct itimerval *)0) == -1))
+        return(LWP_ESYSTEM);
+#else
     bzero((char *)&action, sizeof(action));
     action.sa_sigaction = AlarmHandler;
     action.sa_flags = SA_SIGINFO;
@@ -86,6 +112,7 @@ int PRE_InitPreempt(slice)
     if ((sigaction(SIGALRM, &action, (struct sigaction *)0) == -1) ||
 	(setitimer(ITIMER_REAL, &itv, (struct itimerval *) 0) == -1))
 	return(LWP_ESYSTEM);
+#endif
 
     return(LWP_SUCCESS);
     }
