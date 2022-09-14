@@ -39,6 +39,13 @@ inetd: ${OBJS}
 	esac
 
 inetd.o: inetd.c AFS_component_version_number.c
+	set -x; \
+	case "${SYS_NAME}" in \
+	rs_aix* ) \
+		${CC} -c ${CFLAGS} -D_BSD -D_SUN $< ;; \
+	*) \
+		${CC} -c ${CFLAGS} $< ;;\
+	esac
 ta-rauth.o: ta-rauth.c
 
 clean:
