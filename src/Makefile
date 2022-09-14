@@ -248,7 +248,7 @@ vfsck:	minproject vol
 	case ${SYS_NAME} in \
 	sgi_* | *linux*) \
 		echo skip vfsck for ${SYS_NAME} ;; \
-	rs_aix42)	\
+	rs_aix*)	\
 		echo skip vfsck for ${SYS_NAME} ;; \
 	sun4x_55 )  \
 		echo skip vfsck for ${SYS_NAME} ;; \
@@ -265,7 +265,7 @@ login: project kauth rxkad
 	case ${SYS_NAME} in \
 	sgi_* ) \
 		${COMPILE_PART1} sgistuff ${COMPILE_PART2} ;; \
-	rs_aix42 ) \
+	rs_aix* ) \
 		${WASHTOOL} object login ; \
 		${COMPILE_PART1} tsm41 ${COMPILE_PART2} ;; \
 	alpha_dux* ) \
