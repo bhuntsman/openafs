@@ -135,7 +135,12 @@ rx_pthread.o: ${RX}/rx_pthread.c
 	${CCRULE};
 
 rx.o: ${RX}/rx.c
-	${CCRULE};
+	case "${SYS_NAME}" in					\
+	   rs_aix*)						\
+	       ${CC} ${CFLAGS} -D_BSD -c $? ;;			\
+	   *)							\
+	       ${CCRULE} ;;					\
+	esac
 
 rx_conncache.o: ${RX}/rx_conncache.c
 	${CCRULE};
