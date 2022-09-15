@@ -13,6 +13,10 @@
 #include <netdb.h>
 #endif
 
+#if defined(AFS_PTHREAD_ENV) && defined(AFS_AIX41_ENV)
+#include <sys/select.h>
+#endif
+
 #include <afs/procmgmt.h>
 #include <rx/xdr.h>
 #include <rx/rx.h>
