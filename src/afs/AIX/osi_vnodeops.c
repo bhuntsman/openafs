@@ -135,6 +135,9 @@ struct vnodeops afs_gn_vnodeops = {
 	afs_gn_getacl,
 	afs_gn_setacl,
 	afs_gn_getpcl,
+#if defined(AFS_AIX32_ENV) || defined(AFS_AIX41_ENV)
+	afs_gn_setpcl
+#else
 	afs_gn_setpcl,
 	afs_gn_enosys,	/* vn_seek */
 	afs_gn_enosys,	/* vn_spare0 */
@@ -153,6 +156,7 @@ struct vnodeops afs_gn_vnodeops = {
 	afs_gn_enosys,	/* vn_spareD */
 	afs_gn_enosys,	/* vn_spareE */
 	afs_gn_enosys	/* vn_spareF */
+#endif
 };
 struct vnodeops *afs_ops = &afs_gn_vnodeops;
 
