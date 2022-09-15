@@ -15,7 +15,7 @@
 #define AFS_SIGSET_RESTORE()
 #else
 #define AFS_SIGSET_DECL sigset_t i_tset, i_oset
-#ifdef AFS_AIX42_ENV
+#if defined(AFS_AIX41_ENV) || defined(AFS_AIX42_ENV)
 #define AFS_SET_SIGMASK sigthreadmask
 #else
 #define AFS_SET_SIGMASK pthread_sigmask
