@@ -90,7 +90,7 @@ clean:
 system: install
 install install.noversion: all
 	@case ${SYS_NAME} in \
-	alpha_dux*|sgi_*|sun4x_*|rs_aix4*|*linux*|hp_ux*) \
+	alpha_dux*|sgi_*|sun4x_*|rs_aix*|*linux*|hp_ux*) \
 		echo "Don't install butc for ${SYS_NAME} (will install from tbutc)" ;; \
 	*) \
 		echo ${INSTALL} butc ${DESTDIR}etc/butc ; \
