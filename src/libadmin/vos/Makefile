@@ -47,6 +47,14 @@ libvosadmin.a: ${LIBOBJS}
 
 afs_vosAdmin.o: afs_vosAdmin.h
 
+vsprocs.o: vsprocs.c
+	case ${SYS_NAME} in \
+	rs_aix*) \
+		${CC} ${CFLAGS} -D_BSD -c $? ;; \
+	*) \
+		${CCRULE} ;; \
+	esac
+
 vldbint.cs.o: ${VLSERVER}/vldbint.cs.c
 	${CCRULE};
 
