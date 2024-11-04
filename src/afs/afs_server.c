@@ -1372,13 +1372,19 @@ afs_SetServerPrefs(struct srvAddr *const sa)
 #   elif defined(AFS_FBSD_ENV)
     {
 	struct in_ifaddr *ifa;
+	#if !defined(AFS_FBSD141_ENV)
 	struct rm_priotracker in_ifa_tracker;
+	#endif
 	CURVNET_SET(rx_socket->so_vnet);
+	#if !defined(AFS_FBSD141_ENV)
 	IN_IFADDR_RLOCK(&in_ifa_tracker);
+	#endif
 	AFS_FBSD_NET_FOREACH(ifa, &V_in_ifaddrhead, ia_link) {
 	    afsi_SetServerIPRank(sa, &ifa->ia_ifa);
 	}
+	#if !defined(AFS_FBSD141_ENV)
 	IN_IFADDR_RUNLOCK(&in_ifa_tracker);
+	#endif
 	CURVNET_RESTORE();
     }
 #   elif defined(AFS_OBSD_ENV)
