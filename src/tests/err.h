@@ -42,7 +42,9 @@
 #include <string.h>
 #include <stdarg.h>
 
+#if !defined(AFS_FBSD141_ENV)
 extern const char *__progname;
+#endif
 
 #if !defined(__GNUC__) && !defined(__attribute__)
 #define __attribute__(x)

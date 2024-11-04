@@ -37,7 +37,9 @@
 #include "err.h"
 
 #ifndef HAVE___PROGNAME
+#if !defined(AFS_FBSD141_ENV)
 const char *__progname;
+#endif
 #endif
 
 #ifndef HAVE_GETPROGNAME
