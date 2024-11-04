@@ -200,6 +200,7 @@ struct xfs_inode_info {
 #  include <net/if.h>
 #  include <net/if_var.h>
 #  include <sys/rmlock.h>
+#  include <sys/sysproto.h>
 # endif
 
 # ifdef	AFS_AIX_ENV
