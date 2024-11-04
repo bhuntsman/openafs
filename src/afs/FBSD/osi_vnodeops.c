@@ -278,8 +278,10 @@ afs_vop_lookup(ap)
 	if ((cnp->cn_nameiop == CREATE || cnp->cn_nameiop == RENAME)
 	    && (flags & ISLASTCN) && error == ENOENT)
 	    error = EJUSTRETURN;
+#if __FreeBSD_version < 1400068
 	if (cnp->cn_nameiop != LOOKUP && (flags & ISLASTCN))
 	    cnp->cn_flags |= SAVENAME;
+#endif
 	DROPNAME();
 	*ap->a_vpp = 0;
 	return (error);
@@ -298,8 +300,10 @@ afs_vop_lookup(ap)
     }
     *ap->a_vpp = vp;
 
+#if __FreeBSD_version < 1400068
     if (cnp->cn_nameiop != LOOKUP && (flags & ISLASTCN))
 	cnp->cn_flags |= SAVENAME;
+#endif
 
     DROPNAME();
     return error;
@@ -970,11 +974,17 @@ afs_vop_rename(ap)
 	vrele(fvp);
 	fcnp->cn_flags &= ~MODMASK;
 	fcnp->cn_flags |= LOCKPARENT | LOCKLEAF;
+#if __FreeBSD_version < 1400068
 	if ((fcnp->cn_flags & SAVESTART) == 0)
 	    panic("afs_rename: lost from startdir");
+#endif
 	fcnp->cn_nameiop = DELETE;
 	VREF(fdvp);
+#if __FreeBSD_version >= 1400075
+	error = vfs_relookup(fdvp, &fvp, fcnp, true);
+#else
 	error = relookup(fdvp, &fvp, fcnp);
+#endif
 	if (error == 0)
 	    vrele(fdvp);
 	if (fvp == NULL) {

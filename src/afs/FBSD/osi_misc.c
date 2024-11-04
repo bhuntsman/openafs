@@ -40,14 +40,22 @@ osi_lookupname(char *aname, enum uio_seg seg, int followlink,
 	flags |= FOLLOW;
     else
 	flags |= NOFOLLOW;
+#if __FreeBSD_version >= 1400043 /* thread argument to NDINIT is unused */
+    NDINIT(&n, LOOKUP, flags, seg, aname);
+#else
     NDINIT(&n, LOOKUP, flags, seg, aname, curthread);
+#endif
     if ((error = namei(&n)) != 0) {
 	if (glocked)
 	    AFS_GLOCK();
 	return error;
     }
     *vpp = n.ni_vp;
+#if __FreeBSD_version >= 1400075 /* NDFREE was removed in an earlier commit but they didn't update the macro */
+    NDFREE_PNBUF(&n);
+#else 
     NDFREE(&n, NDF_ONLY_PNBUF);
+#endif
     if (glocked)
 	AFS_GLOCK();
     return 0;
