@@ -88,7 +88,9 @@ extern int osi_readRandom(void *, afs_size_t);
 #undef getpid
 #define getpid()	1
 #else
+# if defined(AFS_AIX_ENV) && !defined(__clang__)
 static_inline pid_t getpid(void) {return 1;};
+# endif
 #endif
 static_inline int open(const char *path, int flags, ...) {return -1;}
 
