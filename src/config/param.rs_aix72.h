@@ -57,6 +57,10 @@
 # define COMPAT_43
 #endif
 
+#if defined(__clang__)
+# define free_sock_hash_table *free_sock_hash_table
+#endif
+
 #define KERNEL_HAVE_UERROR 1
 #define KERNEL_HAVE_PIN 1
 
