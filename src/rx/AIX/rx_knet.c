@@ -125,6 +125,7 @@ ip_stripoptions(struct mbuf *m, STRIP_ARG2_TYPE mopt)
 }
 
 /* rxk_RX_input -	RX pkt input process */
+void
 rxk_RX_input(struct mbuf *am)
 {
     unsigned short *tsp;
@@ -228,7 +229,7 @@ rxk_RX_input(struct mbuf *am)
 }
 
 /* rxk_isr - RX Kluge Input Service Routine */
-static
+static void
 rxk_isr()
 {
     struct mbuf *m;
