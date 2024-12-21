@@ -45,6 +45,9 @@ struct coda_inode_info {
 #include "h/socket.h"
 #if !defined(AFS_LINUX_ENV) && !defined(AFS_OBSD_ENV)
 #include "h/socketvar.h"
+#if defined(__open_xl__) /* work around issue with IBM Open XL C 17.1+ */
+# define EYEC_MBUFA      __EYEC8('m','b','u','f','A','L','L',' ')/* %mbufALL  */
+#endif
 #if !defined(AFS_SUN5_ENV) && !defined(AFS_XBSD_ENV)
 #include "h/domain.h"
 #if !defined(AFS_HPUX110_ENV)
