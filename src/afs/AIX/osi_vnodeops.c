@@ -845,7 +845,7 @@ afs_gn_rdwr(struct vnode *vp,
 }
 
 #define AFS_MAX_VM_CHUNKS 10
-static int
+int
 afs_vm_rdwr(struct vnode *vp, 
 	    struct uio *uiop, 
 	    enum uio_rw rw, 
@@ -1206,7 +1206,7 @@ afs_vm_rdwr(struct vnode *vp,
 }
 
 
-static int
+int
 afs_direct_rdwr(struct vnode *vp, 
 	        struct uio *uiop, 
 		enum uio_rw rw, 
@@ -1813,7 +1813,7 @@ extern int Afs_init();
  * on this behavior to avoid having to think about locking.
  */
 
-static
+int
 vfs_mount(struct vfs *a, struct ucred *b)
 {
     int glockOwner, ret;
@@ -1828,7 +1828,7 @@ vfs_mount(struct vfs *a, struct ucred *b)
     return ret;
 }
 
-static
+int
 vfs_unmount(struct vfs *a, int b, struct ucred *c)
 {
     int glockOwner, ret;
@@ -1843,7 +1843,7 @@ vfs_unmount(struct vfs *a, int b, struct ucred *c)
     return ret;
 }
 
-static
+int
 vfs_root(struct vfs *a, struct vnode **b, struct ucred *c)
 {
     int glockOwner, ret;
@@ -1858,7 +1858,7 @@ vfs_root(struct vfs *a, struct vnode **b, struct ucred *c)
     return ret;
 }
 
-static
+int
 vfs_statfs(struct vfs *a, struct statfs *b, struct ucred *c)
 {
     int glockOwner, ret;
@@ -1873,7 +1873,7 @@ vfs_statfs(struct vfs *a, struct statfs *b, struct ucred *c)
     return ret;
 }
 
-static
+int
 vfs_sync(struct gfs *a)
 {
     int glockOwner, ret;
@@ -1887,7 +1887,7 @@ vfs_sync(struct gfs *a)
     return ret;
 }
 
-static
+int
 vfs_vget(struct vfs *a, struct vnode **b, struct fileid *c, struct ucred *d)
 {
     int glockOwner, ret;
@@ -1902,7 +1902,7 @@ vfs_vget(struct vfs *a, struct vnode **b, struct fileid *c, struct ucred *d)
     return ret;
 }
 
-static
+int
 vfs_cntl(struct vfs *a, int b, caddr_t c, size_t d, struct ucred *e)
 {
     int glockOwner, ret;
@@ -1917,7 +1917,7 @@ vfs_cntl(struct vfs *a, int b, caddr_t c, size_t d, struct ucred *e)
     return ret;
 }
 
-static
+int
 vfs_quotactl(struct vfs *a, int b, uid_t c, caddr_t d, struct ucred *e)
 {
     int glockOwner, ret;
@@ -1933,7 +1933,7 @@ vfs_quotactl(struct vfs *a, int b, uid_t c, caddr_t d, struct ucred *e)
 }
 
 #ifdef AFS_AIX51_ENV
-static
+int
 vfs_syncvfs(struct gfs *a, struct vfs *b, int c, struct ucred *d)
 {
     int glockOwner, ret;

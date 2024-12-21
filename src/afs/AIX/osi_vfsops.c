@@ -231,7 +231,7 @@ afs_vget(struct vfs *vfsp, struct vnode **avcp, struct fileid *fidp,
     return code;
 }
 
-static int
+int
 afs_badop()
 {
     return EOPNOTSUPP;
