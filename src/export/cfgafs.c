@@ -107,6 +107,7 @@ main(int argc, char **argv)
 	buf[0] = "execerror";
 	buf[1] = "cfgafs";
 	cload.path = file;
+	cload.libpath = NULL;
 	res = sysconfig(SYS_KLOAD, &cload, sizeof(cload));
 	if (res != 0) {
 	    perror("SYS_KLOAD");

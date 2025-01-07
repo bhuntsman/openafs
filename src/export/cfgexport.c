@@ -130,6 +130,7 @@ main(int argc, char **argv)
 	get_syms(&conf, syms);
 
 	cload.path = file;
+	cload.libpath = NULL;
 	if (sysconfig(SYS_KLOAD, &cload, sizeof(cload)) == -1) {
 	    loadquery(L_GETMESSAGES, &buf[2], sizeof buf - 8);
 	    execvp(execerror, buf);
