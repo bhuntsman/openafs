@@ -86,7 +86,7 @@ export.ext.nonfs: export.nonfs.o symtab.o
 export64.ext.nonfs: export64.nonfs.o symtab64.o
 	if [ "x$(AIX64)" = "xyes" ]; then  \
 	  ${LD} -b64 -o export64.ext.nonfs -eexport ${IMPORTS} export64.nonfs.o \
-		symtab64.o -bexport:export64.exp -lcsys ; \
+		symtab64.o -bexport:export64.exp -bmap:export64.ext.nonfs.map -lcsys ; \
 	fi
 
 symtab.o symtab64.o: ${srcdir}/symtab.c
@@ -101,9 +101,15 @@ symtab.o symtab64.o: ${srcdir}/symtab.c
 		$(CC) $(AFS_CPPFLAGS) $(AFS_CFLAGS) -DAFS_AIX51_ENV \
 			-c ${srcdir}/symtab.c ;; \
 	rs_aix[67]* ) \
-		$(CC) $(AFS_CPPFLAGS) $(AFS_CFLAGS) $(XCFLAGS64) -D__XCOFF64__ \
-			-DAFS_64BIT_KERNEL -DAFS_AIX51_ENV \
-			-c ${srcdir}/symtab.c ; \
+		if [ "`basename ${CC}`" = "ibm-clang" ]; then \
+			$(CC) $(AFS_CPPFLAGS) $(AFS_CFLAGS) $(XCFLAGS64) -D__XCOFF64__ \
+				-fno-builtin -DAFS_64BIT_KERNEL -DAFS_AIX51_ENV \
+				-c ${srcdir}/symtab.c ; \
+		else \
+			$(CC) $(AFS_CPPFLAGS) $(AFS_CFLAGS) $(XCFLAGS64) -D__XCOFF64__ \
+				-DAFS_64BIT_KERNEL -DAFS_AIX51_ENV \
+				-c ${srcdir}/symtab.c ; \
+		fi ; \
 		mv symtab.o symtab64.o ;; \
 	esac
 
@@ -119,9 +125,15 @@ export.o export64.o: ${srcdir}/export.c
 		$(CC) $(AFS_CPPFLAGS) $(AFS_CFLAGS) -DAFS_AIX51_ENV \
 			-c ${srcdir}/export.c ;; \
 	rs_aix[67]* ) \
-		$(CC) $(AFS_CPPFLAGS) $(AFS_CFLAGS) $(XCFLAGS64) \
-			-D__XCOFF64__ -DAFS_64BIT_KERNEL -DAFS_AIX51_ENV \
-			-c ${srcdir}/export.c ; \
+		if [ "`basename ${CC}`" = "ibm-clang" ]; then \
+			$(CC) $(AFS_CPPFLAGS) $(AFS_CFLAGS) $(XCFLAGS64) \
+				-fno-builtin -D__XCOFF64__ -DAFS_64BIT_KERNEL -DAFS_AIX51_ENV \
+				-c ${srcdir}/export.c ; \
+		else \
+			$(CC) $(AFS_CPPFLAGS) $(AFS_CFLAGS) $(XCFLAGS64) \
+				-D__XCOFF64__ -DAFS_64BIT_KERNEL -DAFS_AIX51_ENV \
+				-c ${srcdir}/export.c ; \
+		fi; \
 		mv export.o export64.o ;; \
 	esac
 
