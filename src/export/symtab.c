@@ -113,8 +113,11 @@ symsrch(char *s)
 	    continue;
 	}
     }
-
+#if !defined(__clang__)
     return found ? sym_flex(found) : 0;
+#else
+    return found ? found : 0;
+#endif
 }
 
 /*
