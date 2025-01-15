@@ -397,6 +397,7 @@ case $AFS_SYSNAME in
 		  MT_CC="$CC"
 		  MT_CFLAGS="-pthread"
 		  XLDFLAGS="-Wl,-K"
+		  CFLAGS="$CFLAGS -fno-builtin"
 		  XCFLAGS64=-m64
 		 ],
 		 [
