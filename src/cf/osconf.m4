@@ -398,7 +398,7 @@ case $AFS_SYSNAME in
 		  MT_CFLAGS="-pthread"
 		  XLDFLAGS="-Wl,-K"
 		  CFLAGS="$CFLAGS -fno-builtin"
-		  XCFLAGS64=-m64
+		  XCFLAGS64="-m64 -fno-builtin"
 		 ],
 		 [
 		  # Assume this is XL C 16.1 or earlier
