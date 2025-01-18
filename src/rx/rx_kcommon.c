@@ -1305,13 +1305,13 @@ osi_Msg(const char *fmt, ...)
 
 #if !defined(AFS_LINUX_ENV)
 void
-# if defined(AFS_AIX_ENV)
+# if defined(AFS_AIX_ENV) && !defined(__clang__)
 osi_Panic(char *msg, void *a1, void *a2, void *a3)
 # else
 osi_Panic(char *msg, ...)
 # endif
 {
-# ifdef AFS_AIX_ENV
+# if defined(AFS_AIX_ENV) && !defined(__clang__)
     if (!msg)
 	msg = "Unknown AFS panic";
     /*
@@ -1332,18 +1332,27 @@ osi_Panic(char *msg, ...)
 	icmn_err(CE_PANIC, msg, ap);
 	va_end(ap);
     }
-# elif defined(AFS_DARWIN80_ENV) || defined(AFS_LINUX_ENV) || defined(AFS_FBSD_ENV) || defined(UKERNEL)
+# elif defined(AFS_DARWIN80_ENV) || defined(AFS_LINUX_ENV) || defined(AFS_FBSD_ENV) || (defined(AFS_AIX_ENV) && defined(__clang__)) || defined(UKERNEL)
     char buf[256];
     va_list ap;
     if (!msg)
 	msg = "Unknown AFS panic";
 
     va_start(ap, msg);
+#  if defined(AFS_AIX_ENV) && defined(__clang__)
+    printf(msg);
+    printf(ap);
+#  else
     vsnprintf(buf, sizeof(buf), msg, ap);
+#  endif
     va_end(ap);
     printf("%s", buf);
+# if defined(AFS_AIX_ENV) && defined(__clang__)
+    panic(buf);
+# else
     panic("%s", buf);
-# else /* DARWIN80 || LINUX || FBSD || UKERNEL */
+# endif /* AFS_AIX_ENV && __clang__ */
+# else /* DARWIN80 || LINUX || FBSD || (AFS_AIX_ENV && __clang__) || UKERNEL */
     va_list ap;
     if (!msg)
 	msg = "Unknown AFS panic";

@@ -46,7 +46,7 @@ extern int osi_utoa(char *buf, size_t len, unsigned long val);
 	    osi_Panic("assertion failed: %s, file: %s, line: %d\n", \
 		      #expr, __FILE__, __LINE__); \
     } while (0)
-#elif defined(AFS_AIX_ENV)
+#elif defined(AFS_AIX_ENV) && !defined(__clang__)
 extern void osi_Panic(char *fmt, void *a1, void *a2, void *a3);
 # define osi_Assert(exp) \
     (void)((exp) || (osi_AssertFailK( #exp , __FILE__, __LINE__), 0))
